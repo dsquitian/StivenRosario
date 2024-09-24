@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/flowers.png" type="image/x-icon">
+    <title>Flowers</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            color: white;
+            background-color: #1a1a1a; /* Fondo oscuro */
+            background-image: url('img/flowers.png'); /* Imagen de fondo */
+            background-size: cover; /* Cubrir toda la pantalla */
+            background-position: center; /* Centrar la imagen */
+            opacity: 0.7; /* Opacidad para que el texto sea legible */
+            overflow: hidden; /* Evitar el desbordamiento */
+        }
+
+        .greetings {
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .shine {
+            animation: shine 0.5s forwards; /* Animación de brillo suave */
+        }
+
+        @keyframes shine {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 20, 147, 0.5), 0 0 20px rgba(255, 20, 147, 0.5), 0 0 30px rgba(255, 20, 147, 0.5);
+                color: #ff1493; /* Color rosa brillante */
+                opacity: 1; /* Totalmente visible */
+            }
+            50% {
+                opacity: 1; /* Totalmente visible */
+                text-shadow: 0 0 20px rgba(255, 20, 147, 1), 0 0 30px rgba(255, 20, 147, 1), 0 0 40px rgba(255, 20, 147, 1);
+                color: #ff69b4; /* Color rosa claro */
+            }
+            100% {
+                opacity: 0; /* Desvanecerse */
+            }
+        }
+
+        .description {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 24px;
+            color: yellow; /* Color amarillo para el mensaje */
+        }
+
+        .hearts {
+            font-size: 32px; /* Tamaño de los corazones */
+            margin-top: 10px;
+            animation: heartbeat 1s infinite; /* Animación de latido */
+        }
+
+        @keyframes heartbeat {
+            0%, 20% {
+                transform: scale(1); /* Tamaño normal */
+            }
+            50% {
+                transform: scale(1.2); /* Crecer */
+            }
+            100% {
+                transform: scale(1); /* Volver al tamaño normal */
+            }
+        }
+
+        .button {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button a {
+            color: white;
+            text-decoration: none;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Estilo para el círculo que sigue al mouse */
+        .cursor-circle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+            pointer-events: none; /* No interferir con eventos de mouse */
+            transition: transform 0.1s ease, opacity 0.3s ease; /* Animación suave */
+            opacity: 0; /* Inicialmente oculto */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="greetings" id="greetings">
+        <span id="word1">Ninguna</span>
+        <span id="word2">flor</span>
+        <span id="word3">se</span>
+        <span id="word4">compara</span>
+        <span id="word5">a</span>
+        <span id="word6">tu</span>
+        <span id="word7">belleza</span>
+        <span id="word8">mi</span>
+        <span id="word9">reina</span>
+        <span id="word10">hermosa</span>
+    </div>
+
+    <div class="description">
+        <span>Te amo mucho mi niña linda Rosario</span>
+        <div class="hearts">❤️❤️❤️❤️❤️</div> <!-- Corazones animados -->
+    </div>
+
+    <div class="button">
+        <button>
+            <a href="flower.html">Presiona Aquí!!</a>
+        </button>
+    </div>
+
+    <div class="cursor-circle" id="cursorCircle"></div> <!-- Círculo del cursor -->
+
+    <script>
+        const words = document.querySelectorAll('.greetings span');
+
+        function shineLetters(wordElement) {
+            const letters = wordElement.textContent.split('');
+            wordElement.innerHTML = ''; // Limpiar el contenido del span
+
+            // Crear spans para cada letra
+            letters.forEach((letter) => {
+                const letterSpan = document.createElement('span');
+                letterSpan.textContent = letter;
+                wordElement.appendChild(letterSpan);
+            });
+
+            const letterSpans = wordElement.querySelectorAll('span');
+            let letterIndex = 0;
+
+            function shineNextLetter() {
+                if (letterIndex < letterSpans.length) {
+                    letterSpans[letterIndex].classList.add('shine');
+                    letterIndex++;
+                    setTimeout(shineNextLetter, 100); // Cambiar a la siguiente letra después de 100 ms
+                }
+            }
+
+            shineNextLetter(); // Iniciar el brillo letra por letra
+        }
+
+        let wordIndex = 0;
+        function shineNextWord() {
+            shineLetters(words[wordIndex]); // Hacer brillar la palabra actual
+            wordIndex++;
+
+            // Cambiar a la siguiente palabra después de 1 segundo
+            if (wordIndex < words.length) {
+                setTimeout(shineNextWord, 1000); // 1 segundo entre palabras
+            } else {
+                wordIndex = 0; // Reiniciar al principio
+                setTimeout(shineNextWord, 1000); // Repetir el ciclo
+            }
+        }
+
+        shineNextWord(); // Iniciar la animación
+
+        // Manejar el cursor personalizado
+        const cursorCircle = document.getElementById('cursorCircle');
+
+        document.addEventListener('mousemove', (e) => {
+            cursorCircle.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`; // Mover el círculo al cursor
+            cursorCircle.style.opacity = 1; // Hacer visible el círculo
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursorCircle.style.opacity = 0; // Ocultar el círculo al salir del área
+        });
+
+        // Efecto de clic
+        document.addEventListener('click', (e) => {
+            const clickCircle = document.createElement('div');
+            clickCircle.style.position = 'absolute';
+            clickCircle.style.width = '30px';
+            clickCircle.style.height = '30px';
+            clickCircle.style.borderRadius = '50%';
+            clickCircle.style.backgroundColor = 'rgba(255, 20, 147, 0.6)'; // Color rosa claro
+            clickCircle.style.pointerEvents = 'none'; // No interferir con eventos
+            clickCircle.style.transform = `translate(${e.clientX - 15}px, ${e.clientY - 15}px)`;
+            clickCircle.style.opacity = '1';
+            clickCircle.style.transition = 'opacity 0.5s ease';
+            document.body.appendChild(clickCircle);
+
+            // Desvanecer el círculo de clic
+            setTimeout(() => {
+                clickCircle.style.opacity = '0';
+            }, 100);
+
+            // Eliminar el círculo después de la transición
+            setTimeout(() => {
+                document.body.removeChild(clickCircle);
+            }, 600);
+        });
+    </script>
+</body>
+
+</html>
+
+
